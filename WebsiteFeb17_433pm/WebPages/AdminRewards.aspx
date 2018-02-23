@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="HomePage.aspx.cs" Inherits="HomePage" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="AdminRewards.aspx.cs" Inherits="AdminRewards" %>
 
 <!DOCTYPE html>
 <html>
@@ -24,9 +24,10 @@
         <h3 class="w3-padding-64"><b>Top 10<br>Solutions</b></h3>
       </div>
       <div class="w3-bar-block">
-        <a href="HomePage.aspx" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-white">Home</a> 
-        <a href="GivePoints.aspx" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-white">Give Points</a> 
-        <a href="Rewards.aspx" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-white">View Rewards</a>  
+        <a href="Admin.aspx" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-white">Home</a>  
+        <a href="AdminRewards.aspx" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-white">Add Rewards</a> 
+        <a href="AdminCreate.aspx" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-white">Create/Edit Users</a> 
+        <a href="AdminAnalytics.aspx" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-white">View Analytics</a>  
         
       </div>
     </nav>
@@ -45,15 +46,14 @@
 
       <!-- Header -->
       <div class="w3-container" style="margin-top:80px" id="showcase">
-        <h1 class="w3-jumbo"><b>Welcome!</b></h1>
-        <h1 class="w3-xxxlarge w3-text-red"><b></b></h1>
+        <h1 class="w3-jumbo"><b>Administration</b></h1>
+        <h1 class="w3-xxxlarge w3-text-red"><b>Filler Text</b></h1>
         <hr style="width:50px;border:5px solid red; float: left;" class="w3-round">
       </div>
 
-    <div>
-        <form id="form1" runat="server">
-            <asp:Label ID="welcomeMessage" runat="server" Text=""></asp:Label>
-            <asp:Label ID="errorMessage" runat="server" Text=""></asp:Label>
+    <div class="w3-container" id="administration" style="margin-top: 75px;">
+        <form id="feed" runat="server">
+            Here
         </form>
     </div>
   
@@ -65,25 +65,26 @@
     <div class="w3-light-grey w3-container w3-padding-32" style="margin-top:75px;padding-right:58px"><p class="w3-right">Powered by <a href="https://www.w3schools.com/w3css/default.asp" title="W3.CSS" target="_blank" class="w3-hover-opacity">w3.css</a></p></div>
 
     <script>
-    // Script to open and close sidebar
-    function w3_open() {
-        document.getElementById("mySidebar").style.display = "block";
-        document.getElementById("myOverlay").style.display = "block";
-    }
- 
-    function w3_close() {
-        document.getElementById("mySidebar").style.display = "none";
-        document.getElementById("myOverlay").style.display = "none";
-    }
+        // Script to open and close sidebar
+        function w3_open() {
+            document.getElementById("mySidebar").style.display = "block";
+            document.getElementById("myOverlay").style.display = "block";
+        }
 
-    // Modal Image Gallery
-    function onClick(element) {
-      document.getElementById("img01").src = element.src;
-      document.getElementById("modal01").style.display = "block";
-      var captionText = document.getElementById("caption");
-      captionText.innerHTML = element.alt;
-    }
+        function w3_close() {
+            document.getElementById("mySidebar").style.display = "none";
+            document.getElementById("myOverlay").style.display = "none";
+        }
+
+        // Modal Image Gallery
+        function onClick(element) {
+            document.getElementById("img01").src = element.src;
+            document.getElementById("modal01").style.display = "block";
+            var captionText = document.getElementById("caption");
+            captionText.innerHTML = element.alt;
+        }
     </script>
 
     </body>
 </html>
+

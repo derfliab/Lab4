@@ -11,11 +11,24 @@
         <style>
         body,h1,h2,h3,h4,h5 {font-family: "Poppins", sans-serif}
         body {font-size:16px;}
+        #btnSearch, #btnElligable, #btnSelect 
+        {
+            background-color: #4CAF50;
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        #btnSearch:hover, #btnElligable:hover, #btnSelect:hover{
+            background-color: #45a049;
+        }
         .w3-half img{margin-bottom:-6px;margin-top:16px;opacity:0.8;cursor:pointer}
         .w3-half img:hover{opacity:1}
             #feed {
                 height: 62px;
             }
+
         </style>
     </head>
     <body>
@@ -29,8 +42,7 @@
       <div class="w3-bar-block">
         <a href="HomePage.aspx" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-white">Home</a> 
         <a href="GivePoints.aspx" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-white">Give Points</a> 
-        <a href="Rewards.aspx" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-white">View Rewards</a> 
-        <a href="Admin.aspx" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-white">Administration</a> 
+        <a href="Rewards.aspx" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-white">View Rewards</a>  
         
       </div>
     </nav>
@@ -59,11 +71,16 @@
             <asp:TextBox ID="txtSearch" runat="server"></asp:TextBox>
             <asp:RadioButton ID="rdoName" runat="server" GroupName="check" Text="Reward Name" ValidationGroup="1" />
             <asp:RadioButton ID="rdoCompany" runat="server" GroupName="check" Text="Reward Provider" ValidationGroup="1" />
-            <asp:Button ID="btnSearch" runat="server" Text="Search" />
-            <asp:Button ID="btnEligable" runat="server" Text="Display Elligable Rewards" />
+            <asp:Button ID="btnSearch" runat="server" Text="Search" OnClick="btnSearch_Click" />
+            <asp:Button ID="btnElligable" runat="server" Text="Display Elligable Rewards" OnClick="btnElligable_Click" />
             <asp:Button ID="btnSelect" runat="server" OnClick="btnSelect_Click" Text="Select" />
             <br/>
-            <asp:ListBox ID="lstRewardsView" runat="server"></asp:ListBox>
+            <asp:ListBox ID="lstRewardsView" runat="server" Width="610px"></asp:ListBox>
+            <asp:ListBox ID="lstElligable" runat="server"></asp:ListBox>
+            <asp:ListBox ID="lstSearchName" runat="server"></asp:ListBox>
+            <asp:ListBox ID="lstSearchProvider" runat="server"></asp:ListBox>
+            <asp:Label ID="Label1" runat="server" Text="Label"></asp:Label>
+            <br />
         </form>
     </div>
   

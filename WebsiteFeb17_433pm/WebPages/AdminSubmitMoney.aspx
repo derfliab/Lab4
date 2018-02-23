@@ -1,4 +1,5 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="GivePoints.aspx.cs" Inherits="GivePoints" %>
+﻿<%@ Page Language="VB" AutoEventWireup="false" CodeFile="AdminSubmitMoney.aspx.cs" Inherits="WebPages_AdminSubmitMoney" %>
+
 
 <!DOCTYPE html>
 <html>
@@ -14,7 +15,7 @@
         .w3-half img{margin-bottom:-6px;margin-top:16px;opacity:0.8;cursor:pointer}
         .w3-half img:hover{opacity:1}
 
-        input[type=text], .ddl, textarea {
+                input[type=text],textarea {
             width: 100%;
             padding: 12px;
             border: 1px solid #ccc;
@@ -25,6 +26,18 @@
             resize: vertical;
         }
 
+        .ddl{
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+            margin-top: 6px;
+            margin-bottom: 16px;
+            resize: vertical;
+            display: inline-block;
+            width: 100px;
+            
+        }
         .button {
             background-color: #4CAF50;
             color: white;
@@ -33,20 +46,15 @@
             border-radius: 4px;
             cursor: pointer;
         }
-
-        input[type=submit]:hover {
-            background-color: #45a049;
+        .row:after {
+            content: "";
+            display: table;
+            clear: both;
         }
-
-        .container {
-            border-radius: 5px;
-            background-color: bisque;
-            padding: 20px;
-        }
-
-            .hiddencol { 
-                display: none; 
-
+            .column {
+                float: left;
+                width: 46%;
+                padding: 10px;
             }
         </style>
     </head>
@@ -59,9 +67,11 @@
         <h3 class="w3-padding-64"><b>Top 10<br>Solutions</b></h3>
       </div>
       <div class="w3-bar-block">
-        <a href="HomePage.aspx" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-white">Home</a> 
-        <a href="GivePoints.aspx" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-white">Give Points</a> 
-        <a href="Rewards.aspx" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-white">View Rewards</a> 
+        <a href="Admin.aspx" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-white">Home</a>  
+        <a href="AdminRewards.aspx" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-white">Add Rewards</a> 
+        <a href="AdminCreate.aspx" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-white">Create/Edit Users</a> 
+        <a href="AdminAnalytics.aspx" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-white">View Analytics</a>  
+        <a href="AdminSubmitMoney.aspx" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-white">Add Money</a>
         
       </div>
     </nav>
@@ -80,49 +90,43 @@
 
       <!-- Header -->
       <div class="w3-container" style="margin-top:80px" id="showcase">
-        <h1 class="w3-jumbo"><b>Reward Team Members</b></h1>
-        <h1 class="w3-xxxlarge w3-text-red"><b>Give Kudos:</b></h1>
+        <h1 class="w3-jumbo"><b>Administration</b></h1>
+        <h1 class="w3-xxxlarge w3-text-red"><b>Submit Money</b></h1>
         <hr style="width:50px;border:5px solid red; float: left;" class="w3-round">
       </div>
 
-    <div class="w3-container" id="givepoints" style="margin-top: 75px;">
+    <div class="w3-container" id="administration" style="margin-top: 75px;">
         <form id="feed" runat="server">
-            <asp:Label ID="Error" runat="server" ForeColor="Red"></asp:Label>
+             
+            <asp:Label ID="AccountHeader" runat="server" Text="Please Enter Account Information Below" Font-Bold="True" Font-Underline="True"></asp:Label>
+            <br /><br />
+            <label>Name on Card:</label>
+            <input id="Name" runat="server" type="text" required=""/>
+            <div class="row"> 
+            <div class="column">
+            <label>Card Number:</label>
+            <input id="CardNumber" runat="server" type="text" required=""/>
+            </div>
+            <div class="column">
+            <label>Amount to Deposit:</label>
+            <input id="amount"runat="server"type="text"/>
+            </div>
+            </div>
+            <div class="row">
+            <div class="column">
+            <label>Expiration Date:</label>
             <br />
-            <label >Team Member</label>
-            <br />
-            <asp:TextBox ID="txtSearchTeamMember" runat="server" required="" OnTextChanged="Search" AutoPostBack="true"></asp:TextBox>
-            <asp:GridView ID="GVTeamMember" runat="server" Visible="false" AutoGenerateColumns="false" OnPageIndexChanging="OnPaging" AutoGenerateSelectButton="true" SelectedRowStyle-BackColor="#DCDCDC">
-                <Columns>
-                    <asp:BoundField DataField="EmployeeID" HeaderText="EmployeeID" ItemStyle-Width="150" ItemStyle-CssClass="hiddencol"  HeaderStyle-CssClass="hiddencol"/>
-                    <asp:BoundField DataField="FullName" HeaderText="Name" ItemStyle-Width="150" />
-                     
-                </Columns>
-            </asp:GridView>
-            <br />
-            <label>Give Kudos For:</label>
-            <asp:DropDownList ID="DropDownCompanyValue" required= "" runat="server" CssClass="ddl"></asp:DropDownList>
-            <label>Date:</label>
-            <input id="txtDate" runat="server" type="text" required= "" placeholder="YYYY-MM-DD" />
+            <asp:DropDownList ID="Month" runat="server" CssClass="ddl"></asp:DropDownList>
+            <asp:DropDownList ID="Year" runat="server" CssClass="ddl"></asp:DropDownList>
+            </div>
+            <div class="column">
+            <label>CVV (3 Digits)</label>
+            <input id="CVV" runat="server" type="text" required=""/>
+            </div>
+            </div>
+            <asp:Button ID="SubmitMoney" runat="server" Text="Submit" OnClick="SubmitMoney_Click" CssClass="button" />
 
-            <label>Description:</label>
-            <textarea id="txtDescription" required= "" runat="server" placeholder="Write a description of the activity completed..."
-                style="height:200px"></textarea>
 
-            <label>Points Given:</label>
-            <asp:DropDownList ID="DropDownPointsGiven" required= "" runat="server" CssClass="ddl">
-                <asp:ListItem Text="Select"></asp:ListItem>
-                <asp:ListItem Text="10"></asp:ListItem>
-                <asp:ListItem Text="25"></asp:ListItem>
-                <asp:ListItem Text="50"></asp:ListItem>
-            </asp:DropDownList>
-
-            <label>Applaud For Being:</label>
-            <asp:DropDownList ID="DropDownApplaud" required= "" runat="server" CssClass="ddl"></asp:DropDownList>
-
-            <asp:Button ID="SubmitGivePoints" runat="server" Text="Submit" OnClick="SubmitGivePointsBtn_Click" CssClass="button" />
-            <br />
-            <asp:Label ID="Label" runat="server"></asp:Label>
         </form>
     </div>
   
@@ -156,3 +160,5 @@
 
     </body>
 </html>
+
+

@@ -13,7 +13,9 @@ public partial class GivePoints : System.Web.UI.Page
 {
     public static int valueIndex;
     public static int pointIndex;
+    public static int applaudIndex;
     public static int selectedEmployeeIndex;
+    static Employee user;
     protected void Page_Load(object sender, EventArgs e)
     {
         if (!this.IsPostBack)
@@ -30,20 +32,34 @@ public partial class GivePoints : System.Web.UI.Page
             Response.Redirect("Login.aspx"); //check that the filepath works
         }
 
-        if (DropDownCompanyValue.SelectedIndex > 0)
+        user = (Employee)Session["user"];
+
+        if(user.Admin == true)
         {
-            valueIndex = DropDownCompanyValue.SelectedIndex;
+            Response.Redirect("Admin.aspx");
         }
         
-         
 
-        if(DropDownPointsGiven.SelectedIndex > 0)
+
+        if (DropDownApplaud.SelectedIndex > 0)
+        {
+            valueIndex = DropDownApplaud.SelectedIndex;
+        }
+
+        if (DropDownCompanyValue.SelectedIndex > 0)
+        {
+            applaudIndex = DropDownCompanyValue.SelectedIndex;
+        }
+
+
+        if (DropDownPointsGiven.SelectedIndex > 0)
         {
             pointIndex = int.Parse(DropDownPointsGiven.SelectedValue);
         }
 
         DropDownPointsGiven.SelectedIndex = 0;
         selectValue();
+        selectApplaud();
     }
     private void SearchEmployee()
     {
@@ -54,7 +70,7 @@ public partial class GivePoints : System.Web.UI.Page
         SqlConnection conn = ProjectDB.connectToDB();
         using (System.Data.SqlClient.SqlCommand insert = new System.Data.SqlClient.SqlCommand())
         {
-            string commandText = "SELECT EmployeeID, Firstname, LastName FROM Employee";
+            string commandText = "SELECT EmployeeID, (FirstName + ' ' + LastName) as FullName FROM Employee";
             if (!string.IsNullOrEmpty(txtSearchTeamMember.Text.Trim()))
             {
                 commandText += " WHERE FirstName LIKE '%' + @FirstName + '%' OR LastName LIKE '%' + @LastName + '%'";
@@ -75,7 +91,7 @@ public partial class GivePoints : System.Web.UI.Page
             conn.Close();
         }
     }
-     
+
     protected void Search(object sender, EventArgs e)
     {
         this.SearchEmployee();
@@ -111,6 +127,28 @@ public partial class GivePoints : System.Web.UI.Page
             Label.Text += s.Message;
         }
     }
+
+    private void selectApplaud()
+    {
+
+        try
+        {
+            SqlConnection conn = ProjectDB.connectToDB();
+            string commandText = "select Name from [dbo].[Applaud]";
+            System.Data.SqlClient.SqlCommand insert = new System.Data.SqlClient.SqlCommand(commandText, conn);
+            DropDownApplaud.DataSource = insert.ExecuteReader();
+            DropDownApplaud.DataTextField = "Name";
+            DropDownApplaud.DataBind();
+            DropDownApplaud.Items.Insert(0, "Select");
+
+            conn.Close();
+        }
+        catch (Exception s)
+        {
+            Label.Text += "Applaud Error";
+            Label.Text += s.Message;
+        }
+    }
     protected void SubmitGivePointsBtn_Click(object sender, EventArgs e)
     {
         bool working = true;
@@ -118,12 +156,17 @@ public partial class GivePoints : System.Web.UI.Page
         {
             working = false;
             Error.Text += "Please select from Points" + "<br>";
-            
+
         }
         if (valueIndex == 0)
         {
             working = false;
             Error.Text += "Please select from Values" + "<br>";
+        }
+        if (applaudIndex == 0)
+        {
+            working = false;
+            Error.Text += "Please select from Applaud For Being" + "<br>";
         }
 
         if (working == true)
@@ -131,30 +174,90 @@ public partial class GivePoints : System.Web.UI.Page
             CommittToDBPoints();
         }
     }
+    
     private void CommittToDBPoints()
     {
- 
+
         try
         {
             SqlConnection conn = ProjectDB.connectToDB();
-            string commandText = "INSERT INTO [dbo].[Achievement] (Description, Date, PointsAmount, EmployeeID, ValueID, RecEmployee) " +
-                "VALUES (@Description, @Date, @PointsAmount, @EmployeeID, @ValueID, @RecEmployee)";
+            string commandText = "INSERT INTO [dbo].[Achievement] (Description, Date, PointsAmount, EmployeeID, ValueID, RecEmployee, ApplaudID) " +
+                "VALUES (@Description, @Date, @PointsAmount, @EmployeeID, @ValueID, @RecEmployee, @ApplaudID)";
             System.Data.SqlClient.SqlCommand insert = new System.Data.SqlClient.SqlCommand(commandText, conn);
             insert.Parameters.AddWithValue("@Description", txtDescription.Value);
             insert.Parameters.AddWithValue("@Date", DateTime.Parse(txtDate.Value));
             insert.Parameters.AddWithValue("@PointsAmount", pointIndex);
-            insert.Parameters.AddWithValue("@EmployeeID", 1);
+            insert.Parameters.AddWithValue("@EmployeeID", findEmployeeID(user.EmpLoginID));
             insert.Parameters.AddWithValue("@ValueID", valueIndex);
             insert.Parameters.AddWithValue("@RecEmployee", int.Parse(GVTeamMember.SelectedRow.Cells[1].Text));
+            insert.Parameters.AddWithValue("@ApplaudID", applaudIndex);
+         
             insert.ExecuteNonQuery();
             Label.Text += insert.CommandText;
             conn.Close();
+
+            SqlConnection add = ProjectDB.connectToDB();
+            string addPoints = "SELECT TOP 1 Points FROM [dbo].[Employee] WHERE EmployeeID = @RecEmployee";
+            System.Data.SqlClient.SqlCommand select = new System.Data.SqlClient.SqlCommand(addPoints, add);
+            select.Parameters.AddWithValue("@RecEmployee", int.Parse(GVTeamMember.SelectedRow.Cells[1].Text));
+
+            SqlDataReader reader = select.ExecuteReader();
+            Decimal points = 0;
+            if(reader.HasRows)
+            {
+                reader.Read();
+                points = (Decimal)reader["Points"];
+            }
+            add.Close();
+
+            SqlConnection addTo = ProjectDB.connectToDB();
+            string addToTable = "UPDATE [dbo].[Employee] SET Points = @PointTotal + @PointAdded WHERE EmployeeID = @RecEmployee";
+            System.Data.SqlClient.SqlCommand update = new System.Data.SqlClient.SqlCommand(addToTable, addTo);
+            update.Parameters.AddWithValue("@PointTotal", points);
+            update.Parameters.AddWithValue("@PointAdded", pointIndex);
+            update.Parameters.AddWithValue("@RecEmployee", int.Parse(GVTeamMember.SelectedRow.Cells[1].Text));
+            update.ExecuteNonQuery();
+            addTo.Close();
+
+
+
         }
-        catch(Exception ea)
+        catch (Exception ea)
         {
-            Label.Text += ea.Message;
-             
+            Label.Text += ea.Message + valueIndex;
+
         }
 
+    }
+
+    protected int findEmployeeID(int id)
+    {
+        int employeeID = 0;
+        try
+        {
+            string commandText = "SELECT TOP 1 EmployeeID FROM [DBO].[EMPLOYEE] WHERE EmpLoginID = @EmpLoginID";
+            SqlConnection conn = ProjectDB.connectToDB();
+            SqlCommand select = new SqlCommand(commandText, conn);
+
+            select.Parameters.AddWithValue("@EmpLoginID", id);
+
+            SqlDataReader reader = select.ExecuteReader();
+
+            if(reader.HasRows)
+            {
+                reader.Read();
+
+                employeeID = (int)reader["EmployeeID"];
+
+            }
+            conn.Close();
+            return employeeID;
+        }
+        catch (Exception ex)
+        {
+            Error.Text += "Error finding employee ID" + ex;
+            return -1;
+        }
+        
     }
 }

@@ -5,13 +5,13 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
-public partial class Admin : System.Web.UI.Page
+public partial class AdminRewards : System.Web.UI.Page
 {
     protected void Page_Load(object sender, EventArgs e)
     {
         if (Session["employeeLoggedIn"] == null)
         {
-            Response.Redirect("Login.aspx"); 
+            Response.Redirect("Login.aspx");
         }
         if (Session["employeeLoggedIn"].ToString() != "True")
         {
@@ -26,5 +26,5 @@ public partial class Admin : System.Web.UI.Page
         }
     }
 
-    
+
 }

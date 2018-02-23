@@ -21,8 +21,8 @@ public class GivePoints
         Date = activityDate;
         ActivityName = activityName;
         ActivityDescription = activityDescription;
-        //PointsGiven = pointsGiven;
-        //Value = companyValue;
+        PointsGiven = pointsGiven;
+        Value = companyValue;
 
     }
 
@@ -49,15 +49,15 @@ public class GivePoints
         private set { activityDescription = value; }
     }
 
-    //public int PointsGiven
-    //{
-    //    get { return pointsGiven; }
-    //    private set { pointsGiven = value; }
-    //}
+    public int PointsGiven
+    {
+        get { return pointsGiven; }
+        private set { pointsGiven = value; }
+    }
 
-    //public string Value
-    //{
-    //    get { return companyValue; }
-    //    private set { companyValue = value; }
-    //}
+    public string Value
+    {
+        get { return companyValue; }
+        private set { companyValue = value; }
+    }
 }

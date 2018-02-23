@@ -24,13 +24,12 @@
         <h3 class="w3-padding-64"><b>Top 10<br>Solutions</b></h3>
       </div>
       <div class="w3-bar-block">
-        <a href="HomePage.aspx" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-white">Home</a> 
-        <a href="GivePoints.aspx" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-white">Give Points</a> 
-        <a href="Rewards.aspx" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-white">View Rewards</a> 
-        <a href="Admin.aspx" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-white">Administration</a> 
-        <a href="Users.aspx" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-white">Create/Edit Users</a> 
-        <a href="Analytics.aspx" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-white">View Analytics</a> 
-        <a href="Settings.aspx" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-white">Settings</a> 
+        <a href="Admin.aspx" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-white">Home</a>  
+        <a href="AdminRewards.aspx" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-white">Add Rewards</a> 
+        <a href="AdminCreate.aspx" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-white">Create/Edit Users</a> 
+        <a href="AdminAnalytics.aspx" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-white">View Analytics</a>
+        <a href="AdminSubmitMoney.aspx" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-white">Add Money</a>
+
         
       </div>
     </nav>

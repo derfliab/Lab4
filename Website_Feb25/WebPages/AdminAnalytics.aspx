@@ -73,7 +73,7 @@
              
             <br />
              
-            <asp:Chart ID="ValueChart" runat="server" DataSourceID="SqlDataSource1" Width="600" Height="400" CssClass="inline">
+            <asp:Chart ID="ValueChart" runat="server" DataSourceID="SqlDataSource1" Width="400" Height="400" CssClass="inline">
                 <Titles>
                     <asp:Title Text="Number of Employees Per Company Value" Font="20pt, style=Bold"></asp:Title>
                 </Titles>
@@ -96,7 +96,7 @@ Value ON Achievement.ValueID = Value.ValueID
 GROUP BY Value.ValueID, Value.Name"></asp:SqlDataSource>
  
             
-            <asp:Chart ID="Chart1" runat="server" DataSourceID="RewardDataSource" CssClass="inline">
+            <asp:Chart ID="Chart1" runat="server" DataSourceID="RewardDataSource" CssClass="inline" Width="400" Height="400">
                 <Titles>
                     <asp:Title Text="Number of Rewards Bought From Each Category" Font="20pt, style=Bold"></asp:Title>
                 </Titles>
@@ -113,7 +113,29 @@ FROM [Transaction] INNER JOIN
 RewardItem ON [Transaction].RewardID = RewardItem.RewardID INNER JOIN
 RewardCategory ON RewardItem.CategoryID = RewardCategory.CategoryID
 GROUP BY RewardCategory.Description"></asp:SqlDataSource>
-             
+            <asp:Chart ID="Chart2" runat="server" CssClass="inline" DataSourceID="SqlDataSource2" Width="400" Height="400">
+                 <Titles>
+                    <asp:Title Text="Sales Per Reward Provider" Font="20pt, style=Bold"></asp:Title>
+                </Titles>
+                <Series>
+                    <asp:Series Name="Series1" XValueMember="ProviderName" YValueMembers="TotalSales" Color="244, 67, 54"></asp:Series>
+                </Series>
+                <ChartAreas>
+                    <asp:ChartArea Name="ChartArea1">
+                        <AxisX Title="Reward Provider" IsLabelAutoFit="true">
+                            <LabelStyle Angle="-50" Interval="1" />
+                        </AxisX>
+                        <AxisY Title="Total Sales" IsLabelAutoFit="true"></AxisY>
+                    </asp:ChartArea>
+                </ChartAreas>
+            </asp:Chart> 
+            
+            <asp:SqlDataSource ID="SqlDataSource2" runat="server" ConnectionString="<%$ ConnectionStrings:Lab4ConnectionString %>" SelectCommand="SELECT        SUM([Transaction].Cost) AS TotalSales, RewardProvider.ProviderName
+FROM            [Transaction] INNER JOIN
+                         RewardItem ON [Transaction].RewardID = RewardItem.RewardID INNER JOIN
+                         RewardProvider ON RewardItem.ProviderID = RewardProvider.ProviderID
+GROUP BY RewardProvider.ProviderName
+ORDER BY TotalSales DESC"></asp:SqlDataSource>
             
         </form>
     </div>

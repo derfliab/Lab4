@@ -31,11 +31,23 @@ public partial class AdminAddFunds : System.Web.UI.Page
         }
     }
 
-    protected void SubmitMoney_Click(object sender, EventArgs e)
+    protected void SubmitFunds_OnClick(object sender, EventArgs e)
     {
-        SqlConnection conn = ProjectDB.connectToDB();
-        string commandText = "iNSERT INTO Points (PointDeposit, Date, Updated By)";
-        System.Data.SqlClient.SqlCommand insert = new System.Data.SqlClient.SqlCommand(commandText, conn);
+        try
+        {
+            string commandText = "INSERT INTO [dbo].[Fund] (AccountTo, AccountFrom, Amount) Values (@AccountTo, @AccountFrom, @Amount)";
+            SqlConnection conn = ProjectDB.connectToDB();
+            SqlCommand insert = new SqlCommand(commandText, conn);
+            insert.Parameters.AddWithValue("@AccountTo", txtDepositTo.Text);
+            insert.Parameters.AddWithValue("@AccountFrom", txtWithdrawFrom.Text);
+            insert.Parameters.AddWithValue("@Amount", txtAmount.Text);
+            insert.ExecuteNonQuery();
+            conn.Close();
+        }
+        catch(Exception)
+        {
+
+        }
     }
 
 

@@ -130,9 +130,9 @@
               </table>
                 
               <br />
-              <asp:Label ID="WithdrawForm" Text="Withdraw From:" runat="server"></asp:Label>
+              <asp:Label ID="WithdrawFrom" Text="Withdraw From:" runat="server"></asp:Label>
               <br />
-              <asp:TextBox ID="txtWithdrawForm" runat="server"></asp:TextBox>
+              <asp:TextBox ID="txtWithdrawFrom" runat="server"></asp:TextBox>
               <br />
               <asp:Label ID="depositTo" Text="Deposit To:" runat="server"></asp:Label>
               <br />
@@ -142,7 +142,7 @@
               <br />
               <asp:TextBox ID="txtAmount" runat="server"></asp:TextBox>
               <br />
-              <asp:Button ID="btnSubmitAddFunds" runat="server" Text="Submit" CssClass="button" />
+              <asp:Button ID="btnSubmitAddFunds" runat="server" Text="Submit" OnClick="SubmitFunds_OnClick" CssClass="button" />
 
               
  
